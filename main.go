@@ -4,13 +4,13 @@
 package main
 
 import (
-    "context"
-    "flag"
-    "log"
+	"context"
+	"flag"
+	"log"
 
-    "github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 
-    "terraform-provider-algorithm/internal/provider"
+	"terraform-provider-algorithm/internal/provider"
 )
 
 // Run "go generate" to format example terraform files and generate the docs for the registry/website
@@ -24,33 +24,33 @@ import (
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate -provider-name exampletime
 
 var (
-    // these will be set by the goreleaser configuration
-    // to appropriate values for the compiled binary.
-    version string = "dev"
+	// these will be set by the goreleaser configuration
+	// to appropriate values for the compiled binary.
+	version string = "dev"
 
-    // goreleaser can pass other information to the main package, such as the specific commit
-    // https://goreleaser.com/cookbooks/using-main.version/
+	// goreleaser can pass other information to the main package, such as the specific commit
+	// https://goreleaser.com/cookbooks/using-main.version/
 )
 
 func main() {
-    var debug bool
+	var debug bool
 
-    flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
-    flag.Parse()
+	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.Parse()
 
-    opts := providerserver.ServeOpts{
-        // NOTE: This is not a typical Terraform Registry provider address, such
-        // as registry.terraform.io/hashicorp/exampletime. This specific
-        // provider address is used in this tutorial in conjunction with a
-        // specific Terraform CLI configuration for manual development testing
-        // of this provider.
-        Address: "hashicorp.com/edu/exampletime",
-        Debug:   debug,
-    }
+	opts := providerserver.ServeOpts{
+		// NOTE: This is not a typical Terraform Registry provider address, such
+		// as registry.terraform.io/hashicorp/exampletime. This specific
+		// provider address is used in this tutorial in conjunction with a
+		// specific Terraform CLI configuration for manual development testing
+		// of this provider.
+		Address: "hashicorp.com/edu/exampletime",
+		Debug:   debug,
+	}
 
-    err := providerserver.Serve(context.Background(), provider.New(version), opts)
+	err := providerserver.Serve(context.Background(), provider.New(version), opts)
 
-    if err != nil {
-        log.Fatal(err.Error())
-    }
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
